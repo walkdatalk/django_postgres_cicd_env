@@ -1,0 +1,29 @@
+version: '3'
+
+volumes:
+  db-data:
+
+services:
+  web:
+    build: .
+    command: 'python3 manage.py makemigrations'
+    command: 'python3 manage.py migrate'
+    command: 'python3 manage.py runserver 0.0.0.0:8000'
+    ports:
+      - '8000:8000'
+    volumes:
+      - '.:/ilibrary'
+    depends_on:
+      - db
+    links:
+      - db
+    tty: true
+    stdin_open: true
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      
